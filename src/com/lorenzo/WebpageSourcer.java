@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 public class WebpageSourcer extends Activity {
     /** Called when the activity is first created. */
@@ -42,10 +43,6 @@ public class WebpageSourcer extends Activity {
    
     private class RetrieveCode extends AsyncTask<String, Void, String> {
 		@Override
-		protected void onPreExecute() {
-			ProgressDialog dialog = ProgressDialog.show(this, "", "Loading. Please wait...", true);	
-		}
-		@Override
 		protected String doInBackground(String... url) {	
 		    	URL urls = null;
 				BufferedReader rd = null;
@@ -67,7 +64,6 @@ public class WebpageSourcer extends Activity {
 					// TODO Auto-generated catch block
 					e3.printStackTrace();
 				}
-			
 			
 			String data = "";
 			try {
@@ -106,8 +102,7 @@ public class WebpageSourcer extends Activity {
 		}
 		@Override
 		protected void onPostExecute(String result) {
-//if not showing this toast and the above dialog spinner add this context detector Context context = getApplicationContext();
-			Toast toast = Toast.makeText(this, "Done!", Toast.LENGTH_SHORT);
+			Toast toast = Toast.makeText(getApplicationContext(), "Done!", Toast.LENGTH_SHORT);
 			toast.show();
 		}
 	}
