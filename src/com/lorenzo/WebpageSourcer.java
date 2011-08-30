@@ -42,6 +42,10 @@ public class WebpageSourcer extends Activity {
    
     private class RetrieveCode extends AsyncTask<String, Void, String> {
 		@Override
+		protected void onPreExecute() {
+			ProgressDialog dialog = ProgressDialog.show(this, "", "Loading. Please wait...", true);	
+		}
+		@Override
 		protected String doInBackground(String... url) {	
 		    	URL urls = null;
 				BufferedReader rd = null;
@@ -99,6 +103,12 @@ public class WebpageSourcer extends Activity {
 				e3.printStackTrace();
 			}
 			return line;
+		}
+		@Override
+		protected void onPostExecute(String result) {
+//if not showing this toast and the above dialog spinner add this context detector Context context = getApplicationContext();
+			Toast toast = Toast.makeText(this, "Done!", Toast.LENGTH_SHORT);
+			toast.show();
 		}
 	}
 
