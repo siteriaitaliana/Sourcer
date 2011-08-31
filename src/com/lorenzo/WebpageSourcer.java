@@ -13,19 +13,21 @@ import java.net.URLEncoder;
 import com.lorenzo.R;
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 public class WebpageSourcer extends Activity {
-    /** Called when the activity is first created. */
+    /* Called when the activity is first created. */
 	final String DevApiKey = "1cc52dbd861eae667878aa117dbefcbb";
-    String host = "http://pastebin.com/api/api_post.php";
+    //String host = "http://pastebin.com/api/api_post.php";
+	String host = "http://www.siteriaitaliana.it/";
 	String code = "";
     String line = "";
     String url = "";
+    String htmlcode = "";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,12 +69,12 @@ public class WebpageSourcer extends Activity {
 			
 			String data = "";
 			try {
-			data = URLEncoder.encode("api_option", "UTF-8") + "=" + URLEncoder.encode("paste", "UTF-8");
-	        data += "&" + URLEncoder.encode("api_paste_format", "UTF-8") + "=" + URLEncoder.encode("html5", "UTF-8");
-	        data += "&" + URLEncoder.encode("api_dev_key", "UTF-8") + "=" + URLEncoder.encode("1cc52dbd861eae667878aa117dbefcbb", "UTF-8");
-	        data += "&" + URLEncoder.encode("api_paste_expire_date", "UTF-8") + "=" + URLEncoder.encode("10M", "UTF-8");
-	        data += "&" + URLEncoder.encode("api_paste_code", "UTF-8") + "=" + URLEncoder.encode(code, "UTF-8");
-	        
+			data = URLEncoder.encode("code", "UTF-8") + "=" + code;
+	        //data += "&" + URLEncoder.encode("api_paste_format", "UTF-8") + "=" + URLEncoder.encode("html5", "UTF-8");
+	        //data += "&" + URLEncoder.encode("api_dev_key", "UTF-8") + "=" + URLEncoder.encode("1cc52dbd861eae667878aa117dbefcbb", "UTF-8");
+	        //data += "&" + URLEncoder.encode("api_paste_expire_date", "UTF-8") + "=" + URLEncoder.encode("10M", "UTF-8");
+	        //data += "&" + URLEncoder.encode("api_paste_code", "UTF-8") + "=" + URLEncoder.encode(code, "UTF-8");
+
 	    	URL url2 = new URL(host);
 		    URLConnection conn = url2.openConnection();
 		    conn.setDoOutput(true);
@@ -84,8 +86,8 @@ public class WebpageSourcer extends Activity {
 		    while ((line = rd1.readLine()) != null) {
 		    	openBrowser();
 		    }
-	    	
 		    wr.close();
+		    rd1.close();
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -97,6 +99,9 @@ public class WebpageSourcer extends Activity {
 			catch (IOException e3) {
 				// TODO Auto-generated catch block
 				e3.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			return line;
 		}
@@ -107,12 +112,14 @@ public class WebpageSourcer extends Activity {
 		}
 	}
 
-	protected void openBrowser() 
-	{
-		Intent i = new Intent(Intent.ACTION_VIEW);
+	protected void openBrowser() throws InterruptedException 
+	{			 
+		WebView myWebView = (WebView) findViewById(R.id.webview);
+		myWebView.setVerticalScrollBarEnabled(true);
+		myWebView.loadData(line, "text/plain", "utf-8");
+		/*Intent i = new Intent(Intent.ACTION_VIEW);
 		i.setData(Uri.parse(line));
-		startActivity(i); 
-		super.finish();
+		startActivity(i); */
 	}
 
     @Override
